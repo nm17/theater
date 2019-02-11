@@ -38,6 +38,7 @@
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordText = new System.Windows.Forms.TextBox();
             this.RegisterButton = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic2)).BeginInit();
             this.SuspendLayout();
@@ -90,11 +91,11 @@
             // Price
             // 
             this.Price.AutoSize = true;
-            this.Price.Location = new System.Drawing.Point(161, 41);
+            this.Price.Location = new System.Drawing.Point(152, 41);
             this.Price.Name = "Price";
-            this.Price.Size = new System.Drawing.Size(33, 13);
+            this.Price.Size = new System.Drawing.Size(42, 13);
             this.Price.TabIndex = 6;
-            this.Price.Text = "Цена";
+            this.Price.Text = "Цена: -";
             // 
             // LoginButton
             // 
@@ -131,11 +132,26 @@
             this.RegisterButton.UseVisualStyleBackColor = true;
             this.RegisterButton.Click += new System.EventHandler(this.RegisterButton_Click);
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Enabled = false;
+            this.checkBox1.Location = new System.Drawing.Point(142, 10);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(62, 17);
+            this.checkBox1.TabIndex = 11;
+            this.checkBox1.Text = "Занято";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
             // BuyTicketsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(379, 170);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.RegisterButton);
             this.Controls.Add(this.PasswordText);
             this.Controls.Add(this.UsernameTextBox);
@@ -167,6 +183,7 @@
         private System.Windows.Forms.TextBox UsernameTextBox;
         private System.Windows.Forms.TextBox PasswordText;
         private System.Windows.Forms.Button RegisterButton;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

@@ -16,7 +16,7 @@ namespace TheaterTickets
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new PlaceChooser(3, 6));
+            Application.Run(new BuyTicketsForm());
         }
     }
 }

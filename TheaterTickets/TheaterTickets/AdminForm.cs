@@ -12,11 +12,27 @@ namespace TheaterTickets
 {
     public partial class AdminForm : Form
     {
-        TheaterAPI asd = new TheaterAPI();
+        private readonly TheaterAPI api;
 
-        public AdminForm()
+        public AdminForm(TheaterAPI api_)
         {
             InitializeComponent();
+            api = api_;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            api.AddTicket((int) numericUpDown1.Value, (int) numericUpDown2.Value, (int) numericUpDown3.Value);
         }
     }
 }

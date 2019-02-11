@@ -7,25 +7,21 @@ using Dict = System.Collections.Generic.Dictionary<string, dynamic>;
 
 namespace TheaterTickets
 {
-    
-
     public class PlaceDontExistException : Exception
     {
-        public PlaceDontExistException()
-        {
-
-        }
     }
 
     public class PlaceAlreadyBookedException : Exception
     {
-        public PlaceAlreadyBookedException()
-        {
-
-        }
     }
 
-    
+    public class AlreadyRegistredException : Exception
+    {
+    }
+
+    public class WrongLoginException : Exception
+    {
+    }
 
     /// <summary>
     /// API для общения с TheaterAPI написаном на питоне.
@@ -34,10 +30,14 @@ namespace TheaterTickets
     /// </summary>
     public class TheaterAPI
     {
-        private RestClient client;
-        private string jwt_token;
+        /// <summary>
+        /// http://restsharp.org/
+        /// </summary>
+        private RestClient Client;
 
-        
+        private string jwt_token = "";
+
+        public bool IsAdmin = false;
 
         /// <summary>
         /// Сам кеш в формате словаря.
@@ -46,11 +46,11 @@ namespace TheaterTickets
 
         public TheaterAPI()
         {
-            client = new RestClient("http://192.168.1.72");
+            Client = new RestClient("http://192.168.1.72");
         }
 
 
-        private bool Authenticated
+        private bool Authorized
         {
             get
             {
@@ -63,13 +63,13 @@ namespace TheaterTickets
         /// </summary>
         /// <param name="url">Путь запроса к серверу. Отправляется в виде <code>"theaterapi/" + <paramref name="url"/></code></param>
         /// <param name="ReqJson">Словарь <see cref="Dict"/> JSON для отправки</param>
-        /// <param name="UseAuth">Использовать </param>
+        /// <param name="UseAuth">Использовать аутентификацию</param>
         /// <returns></returns>
-        private IRestResponse SendRequest(string url, Dict ReqJson, bool UseAuth=false)
+        private IRestResponse SendRequest(string url, Dict ReqJson, bool UseAuth = false)
         {
             if (UseAuth)
             {
-                if (!Authenticated)
+                if (!Authorized)
                 {
                     throw new UnauthorizedAccessException();
                 }
@@ -78,7 +78,7 @@ namespace TheaterTickets
             var Request = new RestRequest("theaterapi/" + url, Method.POST);
             Request.AddJsonBody(ReqJson);
             Request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
-            return client.Execute(Request);
+            return Client.Execute(Request);
         }
 
         /// <summary>
@@ -144,53 +144,82 @@ namespace TheaterTickets
         /// <summary>
         /// Регистрация пользователя
         /// </summary>
-        /// <param name="username">Имя пользователя</param>
-        /// <param name="password">Пароль, в открытом тексте</param>
-        public void Register(string username, string password)
+        /// <exception cref="ArgumentNullException">Если сервер ничего не ответил</exception>
+        /// <exception cref="AlreadyRegistredException">Если пользователь с именем <paramref name="UserName"/> уже есть в базе</exception>
+        /// <param name="UserName">Имя пользователя</param>
+        /// <param name="Password">Пароль, в открытом тексте</param>
+        public void Register(string UserName, string Password)
         {
             var response = SendRequest("register", new Dict
             {
-                {"username", username},
-                {"password", password}
+                {"username", UserName},
+                {"password", Password}
             });
+            if (response.Content == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
-                throw new Exception();
+                throw new AlreadyRegistredException();
             }
-        }
-
-        public void Login(string username, string password)
-        {
-            var response = SendRequest("login", new Dict
-            {
-                {"username", username},
-                {"password", password}
-            });
-            if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
-            {
-                throw new Exception();
-            }
-            var json_result = JsonConvert.DeserializeObject<Dictionary<dynamic, dynamic>>(response.Content);
-            jwt_token = json_result["jwt"];
         }
 
         /// <summary>
-        /// Резервирует
+        /// Вход под именем <paramref name="UserName"/> и с паролем <paramref name="Password"/>
+        /// </summary>
+        /// <param name="UserName">Имя пользователя</param>
+        /// <param name="Password">Пароль пользователя</param>
+        public void Login(string UserName, string Password)
+        {
+            var response = SendRequest("login", new Dict
+            {
+                {"username", UserName},
+                {"password", Password}
+            });
+            if (response.StatusCode == System.Net.HttpStatusCode.BadRequest)
+            {
+                throw new WrongLoginException();
+            }
+            var json_result = JsonConvert.DeserializeObject<Dictionary<dynamic, dynamic>>(response.Content);
+            if (json_result == null)
+            {
+                throw new ArgumentNullException();
+            }
+            jwt_token = json_result["jwt"];
+            IsAdmin = json_result["admin"];
+        }
+
+        /// <summary>
+        /// Бронирует место на ряду <paramref name="Row"/>, место <paramref name="Place"/>
         /// </summary>
         /// <exception cref="PlaceAlreadyBookedException">Если место уже забронировано</exception>
-        /// <param name="row"></param>
-        /// <param name="place"></param>
-        public void Book(int row, int place)
+        /// <exception cref="ArgumentNullException">Если сервер ничего не ответил</exception>
+        /// <param name="Row">Ряд</param>
+        /// <param name="Place">Место</param>
+        public void Book(int Row, int Place)
         {
             var response = SendRequest("book", new Dict{
-                {"row", row},
-                {"place", place}
-            }, true);
-
+                {"row", Row},
+                {"place", Place},
+            }, UseAuth: true);
+            if (response.Content == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (response.StatusCode == System.Net.HttpStatusCode.Forbidden)
             {
                 throw new PlaceAlreadyBookedException();
             }
+        }
+
+        public void AddTicket(int Row, int Place, int Price)
+        {
+            var response = SendRequest("addticket", new Dict{
+                {"row", Row},
+                {"place", Place},
+                {"price", Price}
+            }, UseAuth: true);
         }
     }
 }

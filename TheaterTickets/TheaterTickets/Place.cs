@@ -15,6 +15,10 @@ namespace TheaterTickets
 
         public Place(Dictionary<string, dynamic> json)
         {
+            if (json == null)
+            {
+                throw new ArgumentNullException();
+            } 
             row = unchecked((int)json["row"]);
             place = unchecked((int)json["place"]);
             price = unchecked((int)json["price"]);
