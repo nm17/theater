@@ -28,74 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.PlaceNumeretic1 = new System.Windows.Forms.NumericUpDown();
-            this.PlaceNumeretic2 = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.BuyTicket = new System.Windows.Forms.Button();
-            this.Price = new System.Windows.Forms.Label();
             this.LoginButton = new System.Windows.Forms.Button();
             this.UsernameTextBox = new System.Windows.Forms.TextBox();
             this.PasswordText = new System.Windows.Forms.TextBox();
             this.RegisterButton = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // PlaceNumeretic1
-            // 
-            this.PlaceNumeretic1.Location = new System.Drawing.Point(12, 12);
-            this.PlaceNumeretic1.Name = "PlaceNumeretic1";
-            this.PlaceNumeretic1.Size = new System.Drawing.Size(31, 20);
-            this.PlaceNumeretic1.TabIndex = 1;
-            this.PlaceNumeretic1.ValueChanged += new System.EventHandler(this.PlaceNumeretic1_ValueChanged);
-            // 
-            // PlaceNumeretic2
-            // 
-            this.PlaceNumeretic2.Location = new System.Drawing.Point(12, 39);
-            this.PlaceNumeretic2.Name = "PlaceNumeretic2";
-            this.PlaceNumeretic2.Size = new System.Drawing.Size(31, 20);
-            this.PlaceNumeretic2.TabIndex = 2;
-            this.PlaceNumeretic2.ValueChanged += new System.EventHandler(this.PlaceNumeretic2_ValueChanged);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(87, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(26, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Ряд";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(87, 41);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Кресло";
             // 
             // BuyTicket
             // 
-            this.BuyTicket.Enabled = false;
-            this.BuyTicket.Location = new System.Drawing.Point(12, 65);
+            this.BuyTicket.Location = new System.Drawing.Point(12, 8);
             this.BuyTicket.Name = "BuyTicket";
             this.BuyTicket.Size = new System.Drawing.Size(119, 23);
             this.BuyTicket.TabIndex = 5;
             this.BuyTicket.Text = "Купить билет";
             this.BuyTicket.UseVisualStyleBackColor = true;
             this.BuyTicket.Click += new System.EventHandler(this.BuyTicket_Click);
-            // 
-            // Price
-            // 
-            this.Price.AutoSize = true;
-            this.Price.Location = new System.Drawing.Point(152, 41);
-            this.Price.Name = "Price";
-            this.Price.Size = new System.Drawing.Size(42, 13);
-            this.Price.TabIndex = 6;
-            this.Price.Text = "Цена: -";
             // 
             // LoginButton
             // 
@@ -132,58 +80,29 @@
             this.RegisterButton.UseVisualStyleBackColor = true;
             this.RegisterButton.Click += new System.EventHandler(this.RegisterButton_Click);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Enabled = false;
-            this.checkBox1.Location = new System.Drawing.Point(142, 10);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(62, 17);
-            this.checkBox1.TabIndex = 11;
-            this.checkBox1.Text = "Занято";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
-            // 
             // BuyTicketsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(379, 170);
-            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.RegisterButton);
             this.Controls.Add(this.PasswordText);
             this.Controls.Add(this.UsernameTextBox);
             this.Controls.Add(this.LoginButton);
-            this.Controls.Add(this.Price);
             this.Controls.Add(this.BuyTicket);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.PlaceNumeretic2);
-            this.Controls.Add(this.PlaceNumeretic1);
             this.Name = "BuyTicketsForm";
             this.Text = "Купить билет";
-            ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.PlaceNumeretic2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.NumericUpDown PlaceNumeretic1;
-        private System.Windows.Forms.NumericUpDown PlaceNumeretic2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button BuyTicket;
-        private System.Windows.Forms.Label Price;
         private System.Windows.Forms.Button LoginButton;
         private System.Windows.Forms.TextBox UsernameTextBox;
         private System.Windows.Forms.TextBox PasswordText;
         private System.Windows.Forms.Button RegisterButton;
-        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

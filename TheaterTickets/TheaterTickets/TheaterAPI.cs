@@ -59,13 +59,13 @@ namespace TheaterTickets
         }
 
         /// <summary>
-        /// Вспомогательная функция для отправки POST запроса на сервер.
+        /// Вспомогательная функция для отправки запроса на сервер.
         /// </summary>
         /// <param name="url">Путь запроса к серверу. Отправляется в виде <code>"theaterapi/" + <paramref name="url"/></code></param>
         /// <param name="ReqJson">Словарь <see cref="Dict"/> JSON для отправки</param>
         /// <param name="UseAuth">Использовать аутентификацию</param>
         /// <returns></returns>
-        private IRestResponse SendRequest(string url, Dict ReqJson, bool UseAuth = false)
+        private IRestResponse SendRequest(string url, Dict ReqJson, bool UseAuth = false, Method method = Method.POST)
         {
             if (UseAuth)
             {
@@ -75,7 +75,7 @@ namespace TheaterTickets
                 }
                 ReqJson.Add("jwt", jwt_token);
             }
-            var Request = new RestRequest("theaterapi/" + url, Method.POST);
+            var Request = new RestRequest("theaterapi/" + url, method);
             Request.AddJsonBody(ReqJson);
             Request.OnBeforeDeserialization = resp => { resp.ContentType = "application/json"; };
             return Client.Execute(Request);
@@ -220,6 +220,17 @@ namespace TheaterTickets
                 {"place", Place},
                 {"price", Price}
             }, UseAuth: true);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<int> GetScheme()
+        {
+            var response = SendRequest("scheme", new Dict { }, false, Method.GET);
+            var json_result = JsonConvert.DeserializeObject<List<int>>(response.Content);
+            return json_result;
         }
     }
 }

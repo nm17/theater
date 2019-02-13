@@ -42,7 +42,7 @@ def check_if_admin(f):
         content = flask.request.json
         jwt_token = content.get('jwt', '')
         try:
-            jwt_token = jwt.decode(jwt_token, secret)
+            jwt_token = jwt.decode(jwt_token, secret, algorithms=['HS256'])
         except jwt.DecodeError:
             return flask.jsonify({'error': 401}), 401
         user_id = jwt_token['id']
@@ -68,7 +68,7 @@ def get_authernticated_id(content: dict):
     :return: Токен или None
     """
     try:
-        return jwt.decode(content.get('jwt', ''), secret)['id']
+        return jwt.decode(content.get('jwt', ''), secret, algorithms=['HS256'])['id']
     except jwt.DecodeError:
         return None
 
@@ -78,6 +78,11 @@ def check_if_username_exist(username: str):
     q = tinydb.Query()
     result = users_table.search(q.username == username)
     return len(result) != 0
+
+
+@app.route('/theaterapi/scheme', methods=['GET'])
+def scheme():
+    return flask.jsonify(server_config['scheme'])
 
 
 @app.route('/theaterapi/placeinfo', methods=['POST'])
@@ -140,8 +145,10 @@ def login():
     q = tinydb.Query()
     db.contains(q.username == username)
     result = users_table.search(q.username == username)
+
     if len(result) != 1:
         return flask.jsonify({'error': 400}), 400
+
     result = result[0]
     admin = result['admin']
     if argon2.verify(password, result['password']):
@@ -160,15 +167,15 @@ def book():
     except AttributeError:
         return flask.jsonify({'error': 400}), 400
     content = flask.request.json
-    row = content.get('row', 0)
-    place = content.get('place', 0)
+    row = content.get('row', None)
+    place = content.get('place', None)
 
-    if type(row) is not int or type(place) is not int:
+    if isinstance(row, int) is False or isinstance(place, int) is False:
         return flask.jsonify({'error': 400}), 400
     id_ = get_authernticated_id(content)
 
     q = tinydb.Query()
-    booked_already = len(tickets_table.search((q.free == True) & (q.row == row) & (q.place == place))) != 0
+    booked_already = len(tickets_table.search((q.free == False) & (q.row == row) & (q.place == place))) == 1
     print(booked_already)
 
     if id_ is None:
@@ -188,20 +195,23 @@ def book():
 
 @check_if_admin
 @app.route('/theaterapi/addticket', methods=['POST'])
-def addtickets():
+def addticket():
     try:
         if isinstance(flask.request.json, dict) is False:
             raise AttributeError
     except AttributeError:
         return flask.jsonify({'error': 400}), 400
     content = flask.request.json
-    row = content.get('row', 0)
-    place = content.get('place', 0)
+    row = content.get('row', None)
+    place = content.get('place', None)
+    price = content.get('price', None)
+
+    if isinstance(row, int) is False or isinstance(place, int) is False or \
+            isinstance(price, int) is False:
+        return flask.jsonify({'error': 400}), 400
 
     if check_if_place_exist(row, place):
         return flask.jsonify({'error': 400}), 400
-
-    price = content.get('price', 0)
 
     tickets_table.insert({
         'row': row,
@@ -213,5 +223,9 @@ def addtickets():
     return ''
 
 
+@app.route('/theaterapi/setscheme')
+
+
 if __name__ == '__main__':
+    add_admins()
     app.run(host='192.168.1.72', port=80)

@@ -13,6 +13,8 @@ namespace TheaterTickets
     public partial class AdminForm : Form
     {
         private readonly TheaterAPI api;
+        private int row;
+        private int place;
 
         public AdminForm(TheaterAPI api_)
         {
@@ -32,7 +34,15 @@ namespace TheaterTickets
 
         private void button1_Click(object sender, EventArgs e)
         {
-            api.AddTicket((int) numericUpDown1.Value, (int) numericUpDown2.Value, (int) numericUpDown3.Value);
+            api.AddTicket(row, place, (int) numericUpDown3.Value);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var chooser = new PlaceChooser(api);
+            chooser.ShowDialog();
+            row = chooser.row;
+            place = chooser.place;
         }
     }
 }
