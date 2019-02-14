@@ -26,27 +26,48 @@
       <span class="token string">"place"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
       <span class="token string">"free"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
       <span class="token string">"price"</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"...Уникальный номер пользователя который забронировал место..."</span> 
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"..."</span> 
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token string">"users"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
     <span class="token string">"1"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
       <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token string">"1234"</span><span class="token punctuation">,</span>
-      <span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"$argon2i$...Длинный хеш пароля..."</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"...Уникальный номер пользователя..."</span><span class="token punctuation">,</span>
+      <span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"$argon2i$..."</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"..."</span><span class="token punctuation">,</span>
       <span class="token string">"admin"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
     <span class="token punctuation">}</span><span class="token punctuation">,</span>
     <span class="token string">"2"</span><span class="token punctuation">:</span> <span class="token string">"..."</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Где <code>tickets</code> и <code>users</code>, это таблицы в которых хранятся данные о доступных местах и о пользователях.</p>
+<p>В таблице <code>tickets</code> хранятся информация о доступных местах:</p>
+<ul>
+<li><code>row</code>: Ряд</li>
+<li><code>place</code>: Место</li>
+<li><code>free</code>: Занято место или нет</li>
+<li><code>price</code>: Цена места <em>(пока не используется)</em></li>
+<li><code>id</code>: Уникальный номер пользователя который забронировал это место</li>
+</ul>
+<p>В таблице <code>users</code> хранится информация о пользователях:</p>
+<ul>
+<li><code>username</code>: Имя пользователя. Должно быть уникальным.</li>
+<li><code>password</code>: Пароль пользователя. Должно хранится в <code>argon2</code> хеш-формате. Пример: <code>$argon2i$v=19$m=102400,t=2,p=8$ds6Zs3bOOeccozTGGOM8Zw$6qtXBWH9h6JfMGKPFO3Hrw</code> <em>(Пароль <code>123456</code>)</em></li>
+<li><code>id</code>: Уникальный номер пользователя. Хранится в base64 url-safe формате. Пример: <code>oIvPMhYRU63_3pVLosfJzlU-1WtlKklB</code></li>
+</ul>
 <h3 id="конфигурация-сервера">Конфигурация сервера</h3>
 <p>Создание админов и указание схемы указывается в файле <code>server_config.json</code>.<br>
-Его обязательно нужно заполнить для правильной работы сервера.<br>
-Поле <code>admin</code> содержит лист с данными для входа админов. Пароль хранится также как и в <code>ticketsdb.json</code>. При запуске сервера добавляется в таблицу <code>users</code> c значением <code>admin</code> равным <code>true</code>.  Уникальный номер пользователя <code>id</code> автоматически задается сервером.<br>
-В исходниках есть программа <code>pass_hasher.py</code> которая поможет захешировать пароль.<br>
-Поле <code>scheme</code> означает размер театра в местах.</p>
+Его обязательно нужно заполнить для правильной работы сервера.</p>
+<ul>
+<li><code>scheme</code>: означает размер театра в местах.</li>
+<li><code>admin</code>: лист с данными для входа админов. Пароль хранится также как и в <code>ticketsdb.json</code>. При запуске сервера добавляется в таблицу <code>users</code> c значением <code>admin</code> равным <code>true</code>.  Уникальный номер пользователя <code>id</code> автоматически задается сервером.</li>
+</ul>
+<p>В исходниках есть программа <code>pass_hasher.py</code> которая поможет захешировать пароль.<br>
+Пример вывода программы:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token operator">&gt;</span> python pass_hasher.py
+Пароль: 123456
+Ваш хеш: <span class="token string">"<span class="token variable">$argon2i</span><span class="token variable">$v</span>=19<span class="token variable">$m</span>=102400,t=2,p=8<span class="token variable">$ds6Zs3bOOeccozTGGOM8Zw</span><span class="token variable">$6qtXBWH9h6JfMGKPFO3Hrw</span>"</span>
+Для продолжения нажмите любую клавишу <span class="token keyword">.</span> <span class="token keyword">.</span> <span class="token keyword">.</span>
+</code></pre>
 <h4 id="пример-config_config.json">Пример <code>config_config.json</code>:</h4>
 <pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
   <span class="token string">"admins"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
@@ -56,6 +77,53 @@
   <span class="token string">"scheme"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
 </code></pre>
+<h2 id="клиент">Клиент</h2>
+<p><img src="https://i.imgur.com/gnikg4K.png" alt="Скрин клиента"><br>
+Клиент использует библиотеки <a href="http://restsharp.org/">RestSharp</a> для общения с сервером используя архитектуру REST и <a href="https://www.newtonsoft.com/">Json.NET</a> для обработки полученных с сервера полученных данных.</p>
+<h3 id="документация-функций">Документация функций</h3>
+<p><strong><code>void TheaterTickets.TheaterAPI.Book(int Row, int Place)</code></strong><br>
+Бронирует место на ряду  <em><code>Row</code></em>  , место  <em><code>Place</code></em>  .<br>
+<strong>Exceptions:</strong></p>
+<ul>
+<li><em><code>PlaceAlreadyBookedException</code></em>: Если место уже забронировано</li>
+<li><em><code>ArgumentNullException</code></em>: Если сервер ничего не ответил</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><em><code>Row</code></em>: Ряд</li>
+<li><em><code>Place</code></em>: Место</li>
+</ul>
+<p><strong><code>Place TheaterTickets.TheaterAPI.GetInfo(int row, int place)</code></strong><br>
+Все тоже самое как в RequestInfo(int, int) только используется кеш.</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><em><code>row</code></em>: Ряд</li>
+<li><em><code>place</code></em>: Место</li>
+</ul>
+<p><strong>Returns:</strong><br>
+Place найденного места</p>
+<p><strong><code>List&lt;int&gt; TheaterTickets.TheaterAPI.GetScheme()</code></strong><br>
+<strong>Returns:</strong><br>
+Схему сервера</p>
+<p><strong><code>void TheaterTickets.TheaterAPI.Login(string UserName, string Password)</code></strong><br>
+Вход под именем  <em><code>UserName</code></em>  и с паролем  <em><code>Password</code></em>  .</p>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><em><code>UserName</code></em>: Имя пользователя</li>
+<li><em><code>Password</code></em>: Пароль пользователя</li>
+</ul>
+<p><strong><code>void TheaterTickets.TheaterAPI.Register(string UserName, string Password)</code></strong><br>
+Регистрация пользователя.</p>
+<p><strong>Exceptions:</strong></p>
+<ul>
+<li><em><code>ArgumentNullException</code></em>: Если сервер ничего не ответил</li>
+<li><em><code>AlreadyRegistredException</code></em>: Если пользователь с именем  <em><code>UserName</code></em>  уже есть в базе</li>
+</ul>
+<p><strong>Parameters:</strong></p>
+<ul>
+<li><em><code>UserName</code></em>: Имя пользователя</li>
+<li><em><code>Password</code></em>: Пароль, в открытом тексте</li>
+</ul>
 </div>
 </body>
 
