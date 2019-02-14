@@ -39,7 +39,7 @@
             // 
             // BuyTicket
             // 
-            this.BuyTicket.Location = new System.Drawing.Point(71, 133);
+            this.BuyTicket.Location = new System.Drawing.Point(37, 135);
             this.BuyTicket.Name = "BuyTicket";
             this.BuyTicket.Size = new System.Drawing.Size(119, 23);
             this.BuyTicket.TabIndex = 5;
@@ -49,7 +49,7 @@
             // 
             // LoginButton
             // 
-            this.LoginButton.Location = new System.Drawing.Point(90, 58);
+            this.LoginButton.Location = new System.Drawing.Point(60, 58);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
             this.LoginButton.TabIndex = 7;
@@ -74,9 +74,9 @@
             // 
             // RegisterButton
             // 
-            this.RegisterButton.Location = new System.Drawing.Point(71, 87);
+            this.RegisterButton.Location = new System.Drawing.Point(28, 87);
             this.RegisterButton.Name = "RegisterButton";
-            this.RegisterButton.Size = new System.Drawing.Size(112, 23);
+            this.RegisterButton.Size = new System.Drawing.Size(137, 23);
             this.RegisterButton.TabIndex = 10;
             this.RegisterButton.Text = "Зарегестрироваться";
             this.RegisterButton.UseVisualStyleBackColor = true;

@@ -1,5 +1,5 @@
 import datetime
-import secrets
+import os
 
 import flask
 import jwt
@@ -7,6 +7,14 @@ import tinydb
 import json
 from passlib.hash import argon2
 from tinydb.operations import set
+
+try:
+    from secrets import token_urlsafe
+except ImportError:
+    import base64
+
+    def token_urlsafe(a):
+        return base64.urlsafe_b64encode(os.urandom(a)).rstrip(b'=').decode('ascii')
 
 app = flask.Flask('TheaterAPI')
 
@@ -27,7 +35,7 @@ def add_admins():
         users_table.insert({
             'username': admin_creds['username'],
             'password': admin_creds['password'],
-            'id': secrets.token_urlsafe(24),
+            'id': token_urlsafe(24),
             'admin': True
         })
 
@@ -51,6 +59,7 @@ def check_if_admin(f):
         if len(results) == 0:
             flask.jsonify({'error': 401}), 401
         f()
+
     return wrapper
 
 
@@ -125,7 +134,7 @@ def register():
     users_table.insert({
         'username': username,
         'password': argon2.hash(password),
-        'id': secrets.token_urlsafe(24),
+        'id': token_urlsafe(24),
         'admin': False
     })
     return ''
