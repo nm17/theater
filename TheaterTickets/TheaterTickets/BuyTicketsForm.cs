@@ -66,7 +66,7 @@ namespace TheaterTickets
             }
             catch (PlaceAlreadyBookedException)
             {
-                MessageBox.Show("Уже забронированно");
+                MessageBox.Show("Уже забронированно или место ещё не создано в базе");
                 return;
             }
             MessageBox.Show("Вы успешно купили билет!");
@@ -75,6 +75,11 @@ namespace TheaterTickets
         private void button1_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void BuyTicketsForm_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

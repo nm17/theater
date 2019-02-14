@@ -100,6 +100,12 @@ class TheaterAPITest(unittest.TestCase):
     def test_book(self):
         theaterapi.tickets_table = tinydb.TinyDB('test_11.json')
         theaterapi.users_table = tinydb.TinyDB('test_12.json')
+        theaterapi.tickets_table.insert({
+            'row': 3,
+            'place': 3,
+            'free': True,
+            'id': ''
+        })
         client = theaterapi.app.test_client()
         self.assertEqual(client.post('/theaterapi/book').json['error'], 400)
         self.assertEqual(client.post('/theaterapi/book', json={}).json['error'], 400)
@@ -115,8 +121,8 @@ class TheaterAPITest(unittest.TestCase):
         }).json['error'], 401)
         self.assertEqual(client.post('/theaterapi/book', json={
             'jwt': jwt.encode({'id': ''}, theaterapi.secret).decode(),
-            'row': 1,
-            'place': 1
+            'row': 3,
+            'place': 3
         }).status_code, 200)
         theaterapi.users_table.close()
         theaterapi.tickets_table.close()

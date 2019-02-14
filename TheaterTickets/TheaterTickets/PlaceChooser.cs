@@ -22,10 +22,19 @@ namespace TheaterTickets
 
         void ClickAction(object sender, EventArgs e)
         {
-            var button_tag = (List<int>)(((Button) sender).Tag);
+            var button_tag = (List<int>)((Button) sender).Tag;
             row = button_tag[0];
-            place = button_tag[0];
+            place = button_tag[1];
             Close();
+        }
+
+        void DoubleClickAction(object sender, EventArgs e)
+        {
+            var button_tag = (List<int>) ((Button) sender).Tag;
+            var row_ = button_tag[0];
+            var place_ = button_tag[1];
+            string place_info = api.GetInfo(row_, place_).GetTextInfo();
+            MessageBox.Show(place_info);
         }
 
         public PlaceChooser(TheaterAPI api)
@@ -68,6 +77,7 @@ namespace TheaterTickets
                         BackColor = color
                     };
                     test.Click += ClickAction;
+                    test.MouseDoubleClick += DoubleClickAction;
                     this.Controls.Add(test);
                 }
             }

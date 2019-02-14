@@ -25,12 +25,17 @@ namespace TheaterTickets
             free = json["free"];
         }
 
-        public Place(int row_, int place_)
+        public Place(int row, int place)
         {
-            row = row_;
-            place = place_;
+            this.row = row;
+            this.place = place;
             free = false;
             price = 0;
+        }
+
+        public string GetTextInfo()
+        {
+            return string.Format("Ряд: {1}{0}Место: {2}{0}Цена: {3}{0}", Environment.NewLine, row, place, price);
         }
     }
 }

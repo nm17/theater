@@ -184,6 +184,9 @@ def book():
     if booked_already:
         return flask.jsonify({'error': 403}), 403
 
+    if len(tickets_table.search((q.row == row) & (q.place == place))) == 0:
+        return flask.jsonify({'error': 403}), 403
+
     tickets_table.update(set('id', id_),
                          (q.row == row) & (q.place == place)
                          )
@@ -223,9 +226,6 @@ def addticket():
     return ''
 
 
-@app.route('/theaterapi/setscheme')
-
-
 if __name__ == '__main__':
     add_admins()
-    app.run(host='192.168.1.72', port=80)
+    app.run(host='127.0.0.1', port=80)
