@@ -1,0 +1,53 @@
+﻿---
+
+
+---
+
+<h1 id="theater">Theater</h1>
+<p>Программа для покупки билетов для театра. Программа посвящена <a href="https://www.mkrf.ru/press/current/2019_god_god_teatra_v_rossii/">году театра в России</a>.</p>
+<p>Сервер написан на Python 3 используя <a href="https://ru.wikibooks.org/wiki/Flask">Flask</a> и использует HTTP для общения между сервером и клиентом.<br>
+Клиент написан на C#. В исходниках клиента в файле <code>TheaterAPI.cs</code> содержится много документации самого API.</p>
+<p>Клиент в папке exe общается с сервером на IP <a href="http://212.109.198.136"><code>212.109.198.136</code></a> или также на домене <a href="http://dannevergame.fvds.ru"><code>dannevergame.fvds.ru</code></a>, так что сервер запускать не надо.</p>
+<h2 id="сервер">Сервер</h2>
+<h3 id="база-данных">База данных</h3>
+<p>Все данные хранятся в JSON формате используя библиотеку <a href="https://tinydb.readthedocs.io/en/latest/index.html">TinyDB</a> в файле <code>ticketsdb.json</code>.</p>
+<h4 id="пример-ticketsdb.json">Пример <code>ticketsdb.json</code>:</h4>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"_default"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"tickets"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"1"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">"row"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"place"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"free"</span><span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+      <span class="token string">"price"</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"...Уникальный номер пользователя который забронировал место..."</span> 
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"users"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"1"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token string">"1234"</span><span class="token punctuation">,</span>
+      <span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"$argon2i$...Длинный хеш пароля..."</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"...Уникальный номер пользователя..."</span><span class="token punctuation">,</span>
+      <span class="token string">"admin"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string">"2"</span><span class="token punctuation">:</span> <span class="token string">"..."</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Где <code>tickets</code> и <code>users</code>, это таблицы в которых хранятся данные о доступных местах и о пользователях.</p>
+<h3 id="конфигурация-сервера">Конфигурация сервера</h3>
+<p>Создание админов и указание схемы указывается в файле <code>server_config.json</code>.<br>
+Его обязательно нужно заполнить для правильной работы сервера.<br>
+Поле <code>admin</code> содержит лист с данными для входа админов. Пароль хранится также как и в <code>ticketsdb.json</code>. При запуске сервера добавляется в таблицу <code>users</code> c значением <code>admin</code> равным <code>true</code>.  Уникальный номер пользователя <code>id</code> автоматически задается сервером.<br>
+В исходниках есть программа <code>pass_hasher.py</code> которая поможет захешировать пароль.<br>
+Поле <code>scheme</code> означает размер театра в местах.</p>
+<h4 id="пример-config_config.json">Пример <code>config_config.json</code>:</h4>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"admins"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">{</span>
+    <span class="token string">"username"</span><span class="token punctuation">:</span> <span class="token string">"admin"</span><span class="token punctuation">,</span>
+    <span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"$argon2i$..."</span>
+  <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token string">"scheme"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
