@@ -46,7 +46,7 @@ namespace TheaterTickets
 
         public TheaterAPI()
         {
-            Client = new RestClient("http://127.0.0.1");
+            Client = new RestClient("http://212.109.198.136");
         }
 
 
