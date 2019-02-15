@@ -80,50 +80,6 @@
 <h2 id="клиент">Клиент</h2>
 <p><img src="https://i.imgur.com/gnikg4K.png" alt="Скрин клиента"><br>
 Клиент использует библиотеки <a href="http://restsharp.org/">RestSharp</a> для общения с сервером используя архитектуру REST и <a href="https://www.newtonsoft.com/">Json.NET</a> для обработки полученных с сервера полученных данных.</p>
-<h3 id="документация-функций">Документация функций</h3>
-<p><strong><code>void TheaterTickets.TheaterAPI.Book(int Row, int Place)</code></strong><br>
-Бронирует место на ряду  <em><code>Row</code></em>  , место  <em><code>Place</code></em>  .<br>
-<strong>Exceptions:</strong></p>
-<ul>
-<li><em><code>PlaceAlreadyBookedException</code></em>: Если место уже забронировано</li>
-<li><em><code>ArgumentNullException</code></em>: Если сервер ничего не ответил</li>
-</ul>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><em><code>Row</code></em>: Ряд</li>
-<li><em><code>Place</code></em>: Место</li>
-</ul>
-<p><strong><code>Place TheaterTickets.TheaterAPI.GetInfo(int row, int place)</code></strong><br>
-Все тоже самое как в RequestInfo(int, int) только используется кеш.</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><em><code>row</code></em>: Ряд</li>
-<li><em><code>place</code></em>: Место</li>
-</ul>
-<p><strong>Returns:</strong><br>
-Place найденного места</p>
-<p><strong><code>List&lt;int&gt; TheaterTickets.TheaterAPI.GetScheme()</code></strong><br>
-<strong>Returns:</strong><br>
-Схему сервера</p>
-<p><strong><code>void TheaterTickets.TheaterAPI.Login(string UserName, string Password)</code></strong><br>
-Вход под именем  <em><code>UserName</code></em>  и с паролем  <em><code>Password</code></em>  .</p>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><em><code>UserName</code></em>: Имя пользователя</li>
-<li><em><code>Password</code></em>: Пароль пользователя</li>
-</ul>
-<p><strong><code>void TheaterTickets.TheaterAPI.Register(string UserName, string Password)</code></strong><br>
-Регистрация пользователя.</p>
-<p><strong>Exceptions:</strong></p>
-<ul>
-<li><em><code>ArgumentNullException</code></em>: Если сервер ничего не ответил</li>
-<li><em><code>AlreadyRegistredException</code></em>: Если пользователь с именем  <em><code>UserName</code></em>  уже есть в базе</li>
-</ul>
-<p><strong>Parameters:</strong></p>
-<ul>
-<li><em><code>UserName</code></em>: Имя пользователя</li>
-<li><em><code>Password</code></em>: Пароль, в открытом тексте</li>
-</ul>
 </div>
 </body>
 
